@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Students • Career & Skills Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <div class="brand">
+        <a href="index.html"><img src="assets/logo.svg" alt="Logo" class="logo"/></a>
+        <span>Career & Skills Marketplace</span>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="students.html">Students</a>
+        <a href="employers.html">Employers</a>
+        <a href="universities.html">Universities</a>
+        <a href="mentors.html">Mentors</a>
+        <a href="signup.html" class="btn btn-sm btn-primary">Sign Up</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container grid-2">
+        <div>
+          <h1>Student Profile & Verification</h1>
+          <p class="muted">Create your profile, verify skills, and become internship-ready.</p>
+          <div class="card">
+            <h3>Profile</h3>
+            <form id="profileForm" class="form">
+              <div class="form-row">
+                <label>Full Name</label>
+                <input type="text" id="studentName" placeholder="Jane Doe" required />
+              </div>
+              <div class="form-row">
+                <label>Department</label>
+                <select id="studentDept" required>
+                  <option value="">Select...</option>
+                  <option>Computer Science</option>
+                  <option>Marketing</option>
+                  <option>Finance</option>
+                  <option>Design</option>
+                  <option>Electrical Engineering</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Skills (comma separated)</label>
+                <input type="text" id="studentSkills" placeholder="SEO, SQL, Canva" />
+              </div>
+              <div class="form-row">
+                <label>Portfolio Links</label>
+                <input type="url" id="studentPortfolio" placeholder="https://github.com/username or https://behance.net/..." />
+              </div>
+              <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+          </div>
+
+          <div class="card mt">
+            <h3>Quick Assessment</h3>
+            <div class="inline">
+              <select id="assessmentSkill">
+                <option>SEO</option>
+                <option>SQL</option>
+                <option>Python</option>
+                <option>Video Editing</option>
+                <option>Figma</option>
+              </select>
+              <button id="startAssessment" class="btn">Start</button>
+            </div>
+            <div id="assessmentArea" class="assessment"></div>
+          </div>
+        </div>
+
+        <div>
+          <h2>Your Verified Skills</h2>
+          <div id="verifiedSkills" class="tags"></div>
+
+          <h2 class="mt">Find a Mentor</h2>
+          <div class="inline">
+            <input id="mentorSearch" type="text" placeholder="Search mentors by skill/company"/>
+            <button id="findMentor" class="btn"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+          </div>
+          <div id="mentorResults" class="list-cards mt"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand"><img src="assets/logo.svg" class="logo" alt=""/> <strong>Career & Skills</strong></div>
+        <p class="muted">Bridging university education and industry internships with verified skills.</p>
+        <div class="social">
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="students.html">Students</a>
+        <a href="employers.html">Employers</a>
+        <a href="mentors.html">Mentors</a>
+        <a href="universities.html">Universities</a>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <a href="marketplace.html">Internship Marketplace</a>
+        <a href="#">Guides</a>
+        <a href="#">Support</a>
+      </div>
+      <div>
+        <h4>Get Started</h4>
+        <a class="btn btn-primary" href="signup.html">Create account</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        © <span id="year"></span> Career & Skills Marketplace
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

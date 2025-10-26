@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career & Skills Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <div class="brand">
+        <a href="index.html"><img src="assets/logo.svg" alt="Logo" class="logo"/></a>
+        <span>Career & Skills Marketplace</span>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="students.html">Students</a>
+        <a href="employers.html">Employers</a>
+        <a href="universities.html">Universities</a>
+        <a href="mentors.html">Mentors</a>
+        <a href="signin.html" class="btn btn-sm btn-outline">Sign In</a>
+        <a href="signup.html" class="btn btn-sm btn-primary">Sign Up</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-modern">
+      <div class="hero-bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fas fa-star"></i>
+            <span>Trusted by 1000+ Students & Companies</span>
+          </div>
+          <h1 class="hero-title">
+            Transform Your Career with
+            <span class="gradient-text">Verified Skills</span>
+          </h1>
+          <p class="hero-subtitle">Bridge the gap between university and industry. Get verified, get noticed, get hired.</p>
+          <div class="hero-buttons">
+            <a href="signup.html" class="btn-hero btn-hero-primary">
+              <i class="fas fa-rocket"></i>
+              <span>Start Free Today</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="#demo" class="btn-hero btn-hero-secondary">
+              <i class="fas fa-play-circle"></i>
+              <span>Watch Demo</span>
+            </a>
+          </div>
+          <div class="hero-stats-row">
+            <div class="hero-stat">
+              <div class="hero-stat-number" id="statStudents">0</div>
+              <div class="hero-stat-label">Active Students</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-number" id="statEmployers">0</div>
+              <div class="hero-stat-label">Companies</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-number" id="statMentors">0</div>
+              <div class="hero-stat-label">Expert Mentors</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-number">95%</div>
+              <div class="hero-stat-label">Success Rate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="container">
+        <div class="section-header-center">
+          <span class="section-badge">Why Choose Us</span>
+          <h2 class="section-title">Everything You Need to Succeed</h2>
+          <p class="section-subtitle">Comprehensive platform connecting students, employers, and mentors</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+              <i class="fas fa-certificate"></i>
+            </div>
+            <h3>Skill Verification</h3>
+            <p>Complete practical assessments and get endorsed by industry mentors. Stand out with verified credentials.</p>
+            <a href="students.html" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <h3>Job Matching</h3>
+            <p>AI-powered matching connects you with relevant opportunities based on your verified skills and interests.</p>
+            <a href="marketplace.html" class="feature-link">Browse jobs <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Expert Mentorship</h3>
+            <p>Connect with industry professionals who guide you, review your work, and help you grow.</p>
+            <a href="mentors.html" class="feature-link">Find mentors <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Career Analytics</h3>
+            <p>Track your progress, see skill gaps, and get personalized recommendations for career growth.</p>
+            <a href="profile.html" class="feature-link">View analytics <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+      <div class="container">
+        <div class="section-header-center">
+          <span class="section-badge">Simple Process</span>
+          <h2 class="section-title">Get Started in 3 Easy Steps</h2>
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-icon">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <h3>Create Profile</h3>
+            <p>Sign up and build your professional profile with skills, portfolio, and preferences</p>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-icon">
+              <i class="fas fa-clipboard-check"></i>
+            </div>
+            <h3>Verify Skills</h3>
+            <p>Take quick assessments and get endorsed by mentors to verify your capabilities</p>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <h3>Get Hired</h3>
+            <p>Apply to matched opportunities and land your dream internship or job</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="section-header-center">
+          <span class="section-badge">Success Stories</span>
+          <h2 class="section-title">What Our Users Say</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">"This platform helped me land my dream internship! The skill verification gave me credibility that employers trusted."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">JD</div>
+              <div>
+                <div class="testimonial-name">Jane Doe</div>
+                <div class="testimonial-role">Marketing Student</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">"As an employer, I finally found candidates with verified skills. The quality of hires has improved dramatically."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">AC</div>
+              <div>
+                <div class="testimonial-name">Alex Chen</div>
+                <div class="testimonial-role">HR Manager, TechCorp</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">"Mentoring students through this platform is rewarding. I can directly impact their career trajectory."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">DL</div>
+              <div>
+                <div class="testimonial-name">David Li</div>
+                <div class="testimonial-role">Senior Developer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-modern">
+      <div class="container">
+        <div class="cta-content">
+          <h2>Ready to Transform Your Career?</h2>
+          <p>Join thousands of students who've already verified their skills and landed amazing opportunities</p>
+          <div class="cta-buttons">
+            <a href="signup.html" class="btn-cta-primary">
+              <i class="fas fa-rocket"></i>
+              Get Started Free
+            </a>
+            <a href="marketplace.html" class="btn-cta-secondary">
+              <i class="fas fa-briefcase"></i>
+              Browse Opportunities
+            </a>
+          </div>
+          <p class="cta-note"><i class="fas fa-check-circle"></i> No credit card required • Free forever plan available</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand"><img src="assets/logo.svg" class="logo" alt=""/> <strong>Career & Skills</strong></div>
+        <p class="muted">Bridging university education and industry internships with verified skills.</p>
+        <div class="social">
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="students.html">Students</a>
+        <a href="employers.html">Employers</a>
+        <a href="mentors.html">Mentors</a>
+        <a href="universities.html">Universities</a>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <a href="marketplace.html">Internship Marketplace</a>
+        <a href="#">Guides</a>
+        <a href="#">Support</a>
+      </div>
+      <div>
+        <h4>Get Started</h4>
+        <a class="btn btn-primary" href="signup.html">Create account</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">© <span id="year"></span> Career & Skills Marketplace</div>
+    </div>
+  </footer>
+
+  <div class="modal" id="authModal" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" id="authClose">×</button>
+      <h3>Sign In</h3>
+      <p class="muted">Local demo auth. No backend required.</p>
+      <form id="authForm" class="form">
+        <div class="form-row">
+          <label>Email</label>
+          <input type="email" id="authEmail" placeholder="jane@university.edu" required />
+        </div>
+        <div class="form-row">
+          <label>Role</label>
+          <select id="authRole">
+            <option>Student</option>
+            <option>Employer</option>
+            <option>Mentor</option>
+            <option>University</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

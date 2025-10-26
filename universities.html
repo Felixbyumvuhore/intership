@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universities • Career & Skills Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <div class="brand">
+        <a href="index.html"><img src="assets/logo.svg" alt="Logo" class="logo"/></a>
+        <span>Career & Skills Marketplace</span>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="students.html">Students</a>
+        <a href="employers.html">Employers</a>
+        <a href="universities.html">Universities</a>
+        <a href="mentors.html">Mentors</a>
+        <a href="signup.html" class="btn btn-sm btn-primary">Sign Up</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h1>Universities</h1>
+        <p class="muted">Engage alumni mentors, manage employer relations, and track internship outcomes.</p>
+        <div class="grid-3 mt">
+          <div class="card">
+            <h3>Centralized Dashboard</h3>
+            <p>Track internship postings, student applications, and outcomes in one place.</p>
+          </div>
+          <div class="card">
+            <h3>Alumni Engagement</h3>
+            <p>Activate alumni as mentors and reviewers to improve student readiness.</p>
+          </div>
+          <div class="card">
+            <h3>Outcomes Reporting</h3>
+            <p>Export placements and verification stats for accreditation and leadership.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand"><img src="assets/logo.svg" class="logo" alt=""/> <strong>Career & Skills</strong></div>
+        <p class="muted">Empowering universities to improve internship outcomes.</p>
+        <div class="social">
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="students.html">Students</a>
+        <a href="employers.html">Employers</a>
+        <a href="mentors.html">Mentors</a>
+        <a href="universities.html">Universities</a>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <a href="marketplace.html">Internship Marketplace</a>
+        <a href="#">Guides</a>
+        <a href="#">Support</a>
+      </div>
+      <div>
+        <h4>Get Started</h4>
+        <a class="btn btn-primary" href="signup.html">Create account</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">© <span id="year"></span> Career & Skills Marketplace</div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

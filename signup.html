@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up • Career & Skills Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <div class="brand">
+        <a href="index.html"><img src="assets/logo.svg" alt="Logo" class="logo"/></a>
+        <span>Career & Skills Marketplace</span>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="students.html">Students</a>
+        <a href="employers.html">Employers</a>
+        <a href="universities.html">Universities</a>
+        <a href="mentors.html">Mentors</a>
+        <a href="signin.html" class="btn btn-sm btn-outline">Sign In</a>
+        <a href="signup.html" class="btn btn-sm btn-primary">Sign Up</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container" style="max-width:680px">
+        <div class="card">
+          <h1>Create your account</h1>
+          <p class="muted">Join thousands of students and professionals. Start your journey today!</p>
+          <form id="authForm" class="form mt">
+            <div class="form-row">
+              <label><i class="fas fa-user"></i> Full Name</label>
+              <input type="text" id="authName" placeholder="e.g., Ines Mugabo" required />
+            </div>
+            
+            <div class="form-row">
+              <label><i class="fas fa-briefcase"></i> I am a...</label>
+              <select id="authRole" required>
+                <option value="Student">Student</option>
+                <option value="Employer">Employer</option>
+                <option value="Mentor">Mentor</option>
+                <option value="University">University Admin</option>
+              </select>
+            </div>
+
+            <!-- Student-specific fields -->
+            <div id="studentFields" class="student-fields">
+              <div class="form-row">
+                <label><i class="fas fa-university"></i> University</label>
+                <select id="authUniversity" required>
+                  <option value="">Select your university...</option>
+                  <option value="INES Ruhengeri">INES Ruhengeri</option>
+                  <option value="University of Rwanda">University of Rwanda</option>
+                  <option value="Kigali Independent University">Kigali Independent University (ULK)</option>
+                  <option value="Adventist University of Central Africa">Adventist University of Central Africa (AUCA)</option>
+                  <option value="Mount Kenya University">Mount Kenya University Rwanda</option>
+                  <option value="Other">Other University</option>
+                </select>
+              </div>
+              
+              <div class="form-row">
+                <label><i class="fas fa-id-card"></i> Student ID</label>
+                <input type="text" id="authStudentId" placeholder="e.g., 252707" />
+                <small class="form-hint">Optional: Your university student ID number</small>
+              </div>
+              
+              <div class="form-row">
+                <label><i class="fas fa-envelope"></i> University Email</label>
+                <input type="email" id="authEmail" placeholder="e.g., 252707ines@ines.ac.rw" required />
+                <small class="form-hint">Use your official university email address</small>
+              </div>
+            </div>
+
+            <!-- Non-student email field -->
+            <div id="regularEmailField" class="form-row" style="display:none;">
+              <label><i class="fas fa-envelope"></i> Email Address</label>
+              <input type="email" id="authEmailRegular" placeholder="your.email@example.com" required />
+            </div>
+            
+            <div class="form-row">
+              <label><i class="fas fa-lock"></i> Password</label>
+              <input type="password" id="authPassword" placeholder="At least 8 characters" minlength="8" required />
+            </div>
+            
+            <div class="form-row">
+              <label><i class="fas fa-lock"></i> Confirm Password</label>
+              <input type="password" id="authPasswordConfirm" placeholder="Re-enter your password" minlength="8" required />
+            </div>
+            
+            <div class="form-row">
+              <label class="checkbox-label">
+                <input type="checkbox" id="authTerms" required />
+                <span>I agree to the Terms of Service and Privacy Policy</span>
+              </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-large"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+            
+            <p class="form-note">Already have an account? <a href="signin.html" class="link-primary">Sign in here</a></p>
+          </form>
+          <div class="inline mt">
+            <a class="btn btn-outline" href="students.html"><i class="fa-solid fa-id-badge"></i> Build profile</a>
+            <a class="btn" href="marketplace.html"><i class="fa-solid fa-briefcase"></i> Explore internships</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand"><img src="assets/logo.svg" class="logo" alt=""/> <strong>Career & Skills</strong></div>
+        <p class="muted">Start your journey to a verified, internship-ready profile.</p>
+        <div class="social">
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="students.html">Students</a>
+        <a href="employers.html">Employers</a>
+        <a href="mentors.html">Mentors</a>
+        <a href="universities.html">Universities</a>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <a href="marketplace.html">Internship Marketplace</a>
+        <a href="#">Guides</a>
+        <a href="#">Support</a>
+      </div>
+      <div>
+        <h4>Get Started</h4>
+        <a class="btn btn-primary" href="signup.html">Create account</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">© <span id="year"></span> Career & Skills Marketplace</div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
