@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz - {{ internship.title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
+        .question { background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 5px; border-left: 4px solid #4CAF50; }
+        .question h4 { margin-top: 0; }
+        .options { display: flex; gap: 20px; margin-top: 10px; }
+        .options label { cursor: pointer; }
+        button { padding: 10px 30px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #45a049; }
+        .info { background: #e3f2fd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Quiz for: {{ internship.title }}</h2>
+    
+    <div class="info">
+        <p><strong>Instructions:</strong></p>
+        <ul>
+            <li>You must answer 8 questions (4 general + 4 technical)</li>
+            <li>Each question requires a Yes/No answer</li>
+            <li>You need at least 75% (6 correct answers) to pass</li>
+            <li>Read each question carefully before answering</li>
+        </ul>
+    </div>
+
+    <form method="POST">
+        {% for q in questions %}
+        <div class="question">
+            <h4>Question {{ loop.index }}</h4>
+            <p>{{ q.question }}</p>
+            <div class="options">
+                <label>
+                    <input type="radio" name="q{{ loop.index0 }}" value="yes" required> Yes
+                </label>
+                <label>
+                    <input type="radio" name="q{{ loop.index0 }}" value="no" required> No
+                </label>
+            </div>
+            <input type="hidden" name="correct_{{ loop.index0 }}" value="{{ q.answer }}">
+        </div>
+        {% endfor %}
+        
+        <button type="submit">Submit Quiz</button>
+    </form>
+
+    <p><a href="{{ url_for('main.student_dashboard') }}">Back to Dashboard</a></p>
+</body>
+</html>

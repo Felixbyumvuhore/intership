@@ -58,7 +58,7 @@
                 {% if internship.id in applied_ids %}
                     <span style="color: gray; font-weight: bold;">Already Applied</span>
                 {% else %}
-                    <a class="apply-btn" href="{{ url_for('main.apply', internship_id=internship.id) }}">Apply</a>
+                    <a class="apply-btn" href="{{ url_for('main.take_quiz', internship_id=internship.id) }}">Take Quiz & Apply</a>
                 {% endif %}
             </div>
         {% endfor %}

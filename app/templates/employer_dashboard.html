@@ -37,6 +37,7 @@
                 </p>
                 <p><strong>Location:</strong> {{ internship.location or "Remote/Any" }}</p>
                 <a class="btn edit" href="{{ url_for('main.edit_internship', id=internship.id) }}">Edit</a>
+                <a class="btn edit" href="{{ url_for('main.manage_questions', internship_id=internship.id) }}">Manage Questions</a>
                 <form method="POST" action="{{ url_for('main.delete_internship', id=internship.id) }}" style="display:inline;">
                     <button class="btn delete" onclick="return confirm('Are you sure?')">Delete</button>
                 </form>

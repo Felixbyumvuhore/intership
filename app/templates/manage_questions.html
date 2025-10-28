@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Technical Questions - {{ internship.title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; }
+        .question-block { background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        input[type="text"], textarea { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
+        textarea { height: 60px; }
+        select { padding: 8px; margin: 5px 0; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .info { background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Technical Questions for: {{ internship.title }}</h2>
+    
+    <div class="info">
+        <p><strong>Note:</strong> You must add exactly 8 technical questions. Students will be asked 4 random questions from these 8, along with 4 general professional questions.</p>
+    </div>
+
+    <form method="POST">
+        {% for i in range(1, 9) %}
+        <div class="question-block">
+            <h4>Technical Question {{ i }}</h4>
+            <label>Question:</label>
+            <textarea name="question_{{ i }}" placeholder="Enter your technical question here..." required>{% if questions and i <= questions|length %}{{ questions[i-1].question }}{% endif %}</textarea>
+            
+            <label>Correct Answer:</label>
+            <select name="answer_{{ i }}" required>
+                <option value="">Select...</option>
+                <option value="yes" {% if questions and i <= questions|length and questions[i-1].correct_answer %}selected{% endif %}>Yes</option>
+                <option value="no" {% if questions and i <= questions|length and not questions[i-1].correct_answer %}selected{% endif %}>No</option>
+            </select>
+            
+            <label>Notes/Feedback (optional):</label>
+            <input type="text" name="notes_{{ i }}" placeholder="Explanation for the correct answer" value="{% if questions and i <= questions|length %}{{ questions[i-1].notes }}{% endif %}">
+        </div>
+        {% endfor %}
+        
+        <button type="submit">Save Technical Questions</button>
+    </form>
+
+    <p><a href="{{ url_for('main.employer_dashboard') }}">Back to Dashboard</a></p>
+</body>
+</html>

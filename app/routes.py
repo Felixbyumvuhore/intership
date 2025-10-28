@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash, Flask
-
-from .models import db, Profile, Internship, Application
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from .models import db, Profile, Internship, Application, TechnicalQuestion, get_random_general_questions
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
@@ -119,10 +118,7 @@ def student_dashboard():
         flash("Access denied.", "danger")
         return redirect(url_for('main.login'))
 
-    # Fetch all internships
     internships = Internship.query.all()
-
-    # Simple skill matching: count how many required skills match student skills
     matched = []
     for internship in internships:
         if internship.required_skills:
@@ -131,10 +127,17 @@ def student_dashboard():
             score = 0
         matched.append((internship, score))
 
-    # Sort by score descending
     matched.sort(key=lambda x: x[1], reverse=True)
 
-    return render_template('student_dashboard.html', student=student, matched=matched)
+    # Get applications with quiz status
+    applications = Application.query.filter_by(student_id=student_id).all()
+    applied_ids = [app.internship_id for app in applications]
+
+    return render_template('student_dashboard.html', 
+                         student=student, 
+                         matched=matched, 
+                         applications=applications,
+                         applied_ids=applied_ids)
 
 @main.route('/student/edit', methods=['GET', 'POST'])
 def edit_student():
@@ -217,7 +220,8 @@ def employer_dashboard():
         flash("Access denied.", "danger")
         return redirect(url_for('main.login'))
 
-    internships = Internship.query.filter_by(company_id=employer.id).all()
+    # Changed from company_id to employer_id
+    internships = Internship.query.filter_by(employer_id=employer.id).all()
     return render_template('employer_dashboard.html', employer=employer, internships=internships)
 
 
@@ -241,12 +245,12 @@ def post_internship():
             department=department,
             location=location,
             required_skills=required_skills,
-            company_id=employer.id
+            employer_id=employer.id  # Changed from company_id
         )
         db.session.add(new_internship)
         db.session.commit()
-        flash("Internship posted!", "success")
-        return redirect(url_for('main.employer_dashboard'))
+        flash("Internship posted! Now add technical questions.", "success")
+        return redirect(url_for('main.manage_questions', internship_id=new_internship.id))
 
     return render_template('post_internship.html')
 
@@ -254,7 +258,14 @@ def post_internship():
 # Edit internship
 @main.route('/employer/edit/<int:id>', methods=['GET', 'POST'])
 def edit_internship(id):
-    internship = Internship.query.get(id)
+    internship = Internship.query.get_or_404(id)
+    employer_id = session.get('user_id')
+
+    # Changed from company_id to employer_id
+    if internship.employer_id != employer_id:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('main.employer_dashboard'))
+
     if request.method == 'POST':
         internship.title = request.form.get('title')
         internship.description = request.form.get('description')
@@ -265,22 +276,165 @@ def edit_internship(id):
         db.session.commit()
         flash("Internship updated!", "success")
         return redirect(url_for('main.employer_dashboard'))
+
     return render_template('edit_internship.html', internship=internship)
 
 
 # Delete internship
 @main.route('/employer/delete/<int:id>', methods=['POST'])
 def delete_internship(id):
-    internship = Internship.query.get(id)
+    internship = Internship.query.get_or_404(id)
+    employer_id = session.get('user_id')
+
+    # Changed from company_id to employer_id
+    if internship.employer_id != employer_id:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('main.employer_dashboard'))
+
     db.session.delete(internship)
     db.session.commit()
-    flash("Internship deleted!", "success")
+    flash("Internship deleted.", "info")
     return redirect(url_for('main.employer_dashboard'))
 
 
 # View applicants for an internship
 @main.route('/employer/applicants/<int:id>')
 def view_applicants(id):
-    internship = Internship.query.get(id)
-    applicants = Application.query.filter_by(internship_id=id).all()
-    return render_template('applicants.html', internship=internship, applicants=applicants)
+    internship = Internship.query.get_or_404(id)
+    employer_id = session.get('user_id')
+
+    # Changed from company_id to employer_id
+    if internship.employer_id != employer_id:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('main.employer_dashboard'))
+
+    applications = Application.query.filter_by(internship_id=id).all()
+    return render_template('view_applicants.html', internship=internship, applications=applications)
+
+
+# --------------------------
+# Take Quiz before Apply
+# --------------------------
+@main.route('/quiz/<int:internship_id>', methods=['GET', 'POST'])
+def take_quiz(internship_id):
+    student_id = session.get('user_id')
+    if not student_id:
+        flash("Please login first.", "warning")
+        return redirect(url_for('main.login'))
+
+    internship = Internship.query.get_or_404(internship_id)
+    
+    # Check if already applied
+    existing = Application.query.filter_by(student_id=student_id, internship_id=internship_id).first()
+    if existing:
+        flash("You already applied to this internship.", "info")
+        return redirect(url_for('main.student_dashboard'))
+
+    if request.method == 'POST':
+        # Calculate score
+        total_questions = 8
+        correct_answers = 0
+        
+        # Check answers
+        for i in range(total_questions):
+            student_answer = request.form.get(f'q{i}')
+            correct_answer = request.form.get(f'correct_{i}')
+            
+            if student_answer == correct_answer:
+                correct_answers += 1
+        
+        score = (correct_answers / total_questions) * 100
+        passed = score >= 75  # 75% passing grade (6 out of 8)
+        
+        # Create application
+        new_app = Application(
+            student_id=student_id,
+            internship_id=internship_id,
+            quiz_passed=passed,
+            quiz_score=int(score)
+        )
+        db.session.add(new_app)
+        db.session.commit()
+        
+        if passed:
+            flash(f"Congratulations! You passed with {int(score)}%. Your application has been submitted.", "success")
+        else:
+            flash(f"You scored {int(score)}%. You need at least 75% to apply. Please try again later.", "warning")
+        
+        return redirect(url_for('main.student_dashboard'))
+    
+    # GET request - show quiz
+    # Get 4 random general questions
+    general_questions = get_random_general_questions(4)
+    
+    # Get 4 random technical questions from this internship
+    all_technical = TechnicalQuestion.query.filter_by(internship_id=internship_id).all()
+    
+    if len(all_technical) < 4:
+        flash("This internship doesn't have enough technical questions set up yet.", "warning")
+        return redirect(url_for('main.student_dashboard'))
+    
+    import random
+    technical_questions = random.sample(all_technical, min(4, len(all_technical)))
+    
+    # Combine questions
+    all_questions = []
+    for q in general_questions:
+        all_questions.append({
+            'question': q['question'],
+            'answer': 'yes' if q['answer'] else 'no',
+            'notes': q['notes']
+        })
+    
+    for q in technical_questions:
+        all_questions.append({
+            'question': q.question,
+            'answer': 'yes' if q.correct_answer else 'no',
+            'notes': q.notes
+        })
+    
+    # Shuffle all questions
+    random.shuffle(all_questions)
+    
+    return render_template('quiz.html', internship=internship, questions=all_questions)
+
+
+# --------------------------
+# Employer: Manage Technical Questions
+# --------------------------
+@main.route('/employer/questions/<int:internship_id>', methods=['GET', 'POST'])
+def manage_questions(internship_id):
+    employer_id = session.get('user_id')
+    internship = Internship.query.get_or_404(internship_id)
+    
+    # Changed from company_id to employer_id
+    if internship.employer_id != employer_id:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('main.employer_dashboard'))
+    
+    if request.method == 'POST':
+        # Delete existing questions
+        TechnicalQuestion.query.filter_by(internship_id=internship_id).delete()
+        
+        # Add new questions (expect 8 questions)
+        for i in range(1, 9):
+            question_text = request.form.get(f'question_{i}')
+            answer = request.form.get(f'answer_{i}')
+            notes = request.form.get(f'notes_{i}', '')
+            
+            if question_text and answer:
+                new_q = TechnicalQuestion(
+                    internship_id=internship_id,
+                    question=question_text,
+                    correct_answer=(answer == 'yes'),
+                    notes=notes
+                )
+                db.session.add(new_q)
+        
+        db.session.commit()
+        flash("Technical questions updated successfully!", "success")
+        return redirect(url_for('main.employer_dashboard'))
+    
+    # GET - show existing questions
+    questions = TechnicalQuestion.query.filter_by(internship_id=internship_id).all()
+    return render_template('manage_questions.html', internship=internship, questions=questions)
