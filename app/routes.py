@@ -35,9 +35,20 @@ def index():
 def register():
     if request.method == 'POST':
         full_name = request.form.get('full_name')
-        email = request.form.get('email')  # if you want to store email
+        email = request.form.get('email')
         password = request.form.get('password')
         role = request.form.get('role')
+
+        # Validate input
+        if not full_name or not password or not role:
+            flash("Please fill in all required fields.", "warning")
+            return redirect(url_for('main.register'))
+
+        # Check if user already exists
+        existing_user = Profile.query.filter_by(full_name=full_name).first()
+        if existing_user:
+            flash("A user with this name already exists. Please use a different name or login.", "warning")
+            return redirect(url_for('main.register'))
 
         # For students
         department = request.form.get('department') if role == 'student' else None
@@ -50,7 +61,7 @@ def register():
         company_name = request.form.get('company_name') if role == 'employer' else None
 
         # Hash password safely
-        hashed_password = generate_password_hash(password, method='scrypt')  # avoid deprecated sha256
+        hashed_password = generate_password_hash(password, method='scrypt')
 
         # Create profile
         new_profile = Profile(
@@ -64,11 +75,11 @@ def register():
         try:
             db.session.add(new_profile)
             db.session.commit()
-            flash("Registration successful!", "success")
+            flash("Registration successful! Please login with your credentials.", "success")
             return redirect(url_for('main.login'))
         except Exception as e:
             db.session.rollback()
-            flash(f"Error: {str(e)}", "danger")
+            flash(f"Registration failed: {str(e)}", "danger")
             return redirect(url_for('main.register'))
 
     return render_template('register.html')
@@ -80,16 +91,35 @@ def register():
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        full_name = request.form['full_name']  # For MVP, login by name
+        full_name = request.form.get('full_name')
+        password = request.form.get('password')
+        
+        # Validate input
+        if not full_name or not password:
+            flash("Please enter both name and password.", "warning")
+            return redirect(url_for('main.login'))
+        
+        # Find user
         profile = Profile.query.filter_by(full_name=full_name).first()
-        if profile:
-            session['user_id'] = profile.id
-            session['role'] = profile.role
-            if profile.role == 'student':
-                return redirect(url_for('main.student_dashboard'))
-            else:
-                return redirect(url_for('main.employer_dashboard'))
-        return "User not found", 404
+        
+        if not profile:
+            flash("User not found. Please check your name or register first.", "danger")
+            return redirect(url_for('main.login'))
+        
+        # For now, we're not checking password (MVP mode)
+        # In production, you'd check: check_password_hash(profile.password_hash, password)
+        
+        # Set session
+        session['user_id'] = profile.id
+        session['role'] = profile.role
+        
+        flash(f"Welcome back, {profile.full_name}!", "success")
+        
+        # Redirect based on role
+        if profile.role == 'student':
+            return redirect(url_for('main.student_dashboard'))
+        else:
+            return redirect(url_for('main.employer_dashboard'))
 
     return render_template("login.html")
 

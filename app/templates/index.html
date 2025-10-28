@@ -1,22 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Student Career & Skills Marketplace</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        a { display: inline-block; margin: 10px; padding: 10px 20px; text-decoration: none; background: #4CAF50; color: white; border-radius: 5px; }
-        a:hover { background: #45a049; }
-    </style>
-</head>
-<body>
-    <h1>Welcome to the Student Career & Skills Marketplace</h1>
-    <p>Connect students with internships efficiently.</p>
+{% extends "base.html" %}
 
-    <div>
-        <a href="{{ url_for('main.register') }}">Register</a>
-        <a href="{{ url_for('main.login') }}">Login</a>
+{% block title %}Welcome - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container-custom">
+    <!-- Hero Section -->
+    <div class="text-center py-5 fade-in">
+        <div class="mb-4">
+            <i class="bi bi-mortarboard-fill" style="font-size: 5rem; color: var(--primary-color);"></i>
+        </div>
+        <h1 class="display-4 fw-bold mb-3">Welcome to CareerHub</h1>
+        <p class="lead text-secondary mb-5" style="max-width: 600px; margin: 0 auto;">
+            The intelligent platform connecting students with meaningful internship opportunities through skill-based matching and professional assessments.
+        </p>
+        
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{{ url_for('main.register') }}" class="btn btn-primary btn-lg">
+                <i class="bi bi-person-plus-fill me-2"></i>Get Started
+            </a>
+            <a href="{{ url_for('main.login') }}" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+            </a>
+        </div>
     </div>
-</body>
-</html>
 
+    <!-- Features Section -->
+    <div class="row g-4 mt-5">
+        <div class="col-md-4">
+            <div class="card-custom text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-search" style="font-size: 3rem; color: var(--primary-color);"></i>
+                </div>
+                <h4>Smart Matching</h4>
+                <p class="text-secondary mb-0">
+                    Our algorithm matches students with internships based on skills, department, and career goals.
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card-custom text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-clipboard-check" style="font-size: 3rem; color: var(--accent-color);"></i>
+                </div>
+                <h4>Professional Assessments</h4>
+                <p class="text-secondary mb-0">
+                    Students complete curated quizzes to demonstrate professionalism and technical knowledge.
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card-custom text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-lightning-charge-fill" style="font-size: 3rem; color: #ff9500;"></i>
+                </div>
+                <h4>Quick Application</h4>
+                <p class="text-secondary mb-0">
+                    Streamlined application process with instant feedback on quiz performance.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

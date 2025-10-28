@@ -1,11 +1,133 @@
-<h2>Applicants for {{ internship.title }}</h2>
-{% if applicants %}
-    <ul>
-    {% for app in applicants %}
-        <li>{{ app.student.full_name }} - {{ app.student.department }} | Skills: {{ app.student.skills|join(', ') }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No applicants yet.</p>
-{% endif %}
-<a href="{{ url_for('main.employer_dashboard') }}">Back to Dashboard</a>
+{% extends "base.html" %}
+
+{% block title %}Applicants - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container-custom py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
+        <div>
+            <h2 class="mb-1">Applicants</h2>
+            <p class="text-secondary mb-0">
+                <i class="bi bi-briefcase me-2"></i>{{ internship.title }}
+            </p>
+        </div>
+        <a href="{{ url_for('main.employer_dashboard') }}" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+
+    {% if applications %}
+        <!-- Statistics -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card-custom">
+                    <div class="card-body-custom text-center">
+                        <i class="bi bi-people-fill" style="font-size: 2.5rem; color: var(--primary-color);"></i>
+                        <h3 class="mt-2 mb-0">{{ applications|length }}</h3>
+                        <p class="text-secondary mb-0">Total Applicants</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-custom">
+                    <div class="card-body-custom text-center">
+                        <i class="bi bi-check-circle-fill" style="font-size: 2.5rem; color: var(--accent-color);"></i>
+                        <h3 class="mt-2 mb-0">{{ applications|selectattr('quiz_passed')|list|length }}</h3>
+                        <p class="text-secondary mb-0">Passed Quiz</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-custom">
+                    <div class="card-body-custom text-center">
+                        <i class="bi bi-x-circle-fill" style="font-size: 2.5rem; color: #ff3b30;"></i>
+                        <h3 class="mt-2 mb-0">{{ applications|rejectattr('quiz_passed')|list|length }}</h3>
+                        <p class="text-secondary mb-0">Failed Quiz</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applicants List -->
+        <div class="row g-4">
+            {% for app in applications %}
+            <div class="col-md-6">
+                <div class="card-custom">
+                    <div class="card-body-custom">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h4 class="mb-1">{{ app.student.full_name }}</h4>
+                                <p class="text-secondary mb-0">
+                                    <i class="bi bi-building me-1"></i>
+                                    {{ app.student.department or "No department specified" }}
+                                </p>
+                            </div>
+                            {% if app.quiz_passed %}
+                            <span class="badge-custom badge-success">
+                                <i class="bi bi-trophy-fill me-1"></i>Qualified
+                            </span>
+                            {% else %}
+                            <span class="badge-custom badge-danger">
+                                <i class="bi bi-x-circle-fill me-1"></i>Not Qualified
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        {% if app.student.skills %}
+                        <div class="mb-3">
+                            <small class="text-secondary d-block mb-2">
+                                <i class="bi bi-star-fill me-1"></i><strong>Skills:</strong>
+                            </small>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for skill in app.student.skills %}
+                                <span class="badge bg-light text-dark" style="border: 1px solid #ddd;">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <hr>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <small class="text-secondary">
+                                    <i class="bi bi-calendar-check me-1"></i>
+                                    <strong>Applied:</strong><br>
+                                    {{ app.applied_at.strftime('%B %d, %Y') }}
+                                </small>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-secondary">
+                                    <i class="bi bi-graph-up me-1"></i>
+                                    <strong>Quiz Score:</strong><br>
+                                    {{ app.quiz_score }}%
+                                </small>
+                            </div>
+                        </div>
+
+                        {% if app.quiz_passed %}
+                        <div class="alert alert-success mb-0">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <strong>Passed Assessment</strong> - This candidate meets the qualification requirements.
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger mb-0">
+                            <i class="bi bi-x-circle-fill me-2"></i>
+                            <strong>Did Not Pass</strong> - Score below 75% threshold.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h4>No applications yet</h4>
+            <p>Applications will appear here once students apply to this internship.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

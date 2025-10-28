@@ -1,19 +1,80 @@
-<h2>{{ internship.title if internship else "Post New Internship" }}</h2>
-<form method="POST">
-    <label>Title</label>
-    <input type="text" name="title" value="{{ internship.title if internship else '' }}" required>
+{% extends "base.html" %}
 
-    <label>Description</label>
-    <textarea name="description" required>{{ internship.description if internship else '' }}</textarea>
+{% block title %}Post Internship - CareerHub{% endblock %}
 
-    <label>Department</label>
-    <input type="text" name="department" value="{{ internship.department if internship else '' }}">
+{% block content %}
+<div class="container-custom py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card-custom fade-in">
+                <div class="card-header-custom">
+                    <h3 class="mb-0">
+                        <i class="bi bi-plus-circle-fill me-2"></i>
+                        {{ "Edit Internship" if internship else "Post New Internship" }}
+                    </h3>
+                </div>
+                <div class="card-body-custom p-4">
+                    <form method="POST">
+                        <div class="mb-4">
+                            <label for="title" class="form-label">
+                                <i class="bi bi-briefcase me-2"></i>Internship Title
+                            </label>
+                            <input type="text" class="form-control" id="title" name="title" 
+                                   value="{{ internship.title if internship else '' }}" 
+                                   placeholder="e.g., Software Development Intern" required>
+                        </div>
 
-    <label>Location</label>
-    <input type="text" name="location" value="{{ internship.location if internship else '' }}">
+                        <div class="mb-4">
+                            <label for="description" class="form-label">
+                                <i class="bi bi-file-text me-2"></i>Description
+                            </label>
+                            <textarea class="form-control" id="description" name="description" rows="5" 
+                                      placeholder="Describe the internship role, responsibilities, and what the student will learn..." required>{{ internship.description if internship else '' }}</textarea>
+                        </div>
 
-    <label>Skills Required (comma separated)</label>
-    <input type="text" name="skills" value="{{ internship.required_skills|join(', ') if internship else '' }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="department" class="form-label">
+                                    <i class="bi bi-building me-2"></i>Department
+                                </label>
+                                <input type="text" class="form-control" id="department" name="department" 
+                                       value="{{ internship.department if internship else '' }}" 
+                                       placeholder="e.g., Engineering">
+                            </div>
 
-    <button type="submit">Submit</button>
-</form>
+                            <div class="col-md-6 mb-4">
+                                <label for="location" class="form-label">
+                                    <i class="bi bi-geo-alt me-2"></i>Location
+                                </label>
+                                <input type="text" class="form-control" id="location" name="location" 
+                                       value="{{ internship.location if internship else '' }}" 
+                                       placeholder="e.g., Remote, New York, Hybrid">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="skills" class="form-label">
+                                <i class="bi bi-tools me-2"></i>Required Skills
+                            </label>
+                            <input type="text" class="form-control" id="skills" name="skills" 
+                                   value="{{ internship.required_skills|join(', ') if internship else '' }}" 
+                                   placeholder="e.g., Python, React, Communication">
+                            <small class="text-secondary">Separate multiple skills with commas</small>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-2"></i>
+                                {{ "Update Internship" if internship else "Post Internship" }}
+                            </button>
+                            <a href="{{ url_for('main.employer_dashboard') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

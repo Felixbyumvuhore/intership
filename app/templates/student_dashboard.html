@@ -1,89 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Student Dashboard</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; }
-        h2 { text-align: center; margin-top: 40px; }
-        .internship { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
-        .internship h3 { margin: 0 0 10px 0; }
-        .skills { font-size: 0.9em; color: #555; margin-bottom: 5px; }
-        .apply-btn { padding: 8px 15px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; }
-        .apply-btn:hover { background: #45a049; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .top-bar a { text-decoration: none; color: #4CAF50; font-weight: bold; margin-left: 10px; }
-        .section-title { margin-top: 40px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        .flash { padding: 10px; border-radius: 4px; margin-bottom: 15px; }
-        .flash-success { background-color: #d4edda; color: #155724; }
-        .flash-info { background-color: #cce5ff; color: #004085; }
-        .flash-warning { background-color: #fff3cd; color: #856404; }
-        .flash-danger { background-color: #f8d7da; color: #721c24; }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <div class="top-bar">
-        <span>Welcome, {{ student.full_name }} ({{ student.department }})</span>
+{% block title %}Student Dashboard - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container-custom">
+    <!-- Welcome Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
         <div>
-            <a href="{{ url_for('main.edit_student') }}">Edit Profile</a> |
-            <a href="{{ url_for('main.logout') }}">Logout</a>
+            <h2 class="mb-1">Welcome back, {{ student.full_name }}</h2>
+            <p class="text-secondary mb-0">
+                <i class="bi bi-building me-2"></i>{{ student.department }}
+            </p>
         </div>
     </div>
 
-    <!-- Flash messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-            <div class="flash flash-{{ category }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+    <!-- Matched Internships Section -->
+    <div class="section-header fade-in">
+        <h3><i class="bi bi-stars me-2" style="color: var(--primary-color);"></i>Matched Internships</h3>
+        <p>Based on your skills and department preferences</p>
+    </div>
 
-    <!-- Matched Internships -->
-    <h2 class="section-title">Matched Internships</h2>
     {% if matched %}
-        {% for internship, score in matched %}
-            <div class="internship">
-                <h3>{{ internship.title }}</h3>
-                <p>{{ internship.description }}</p>
-                <p class="skills">
-                    <strong>Department:</strong> {{ internship.department or "Any" }} | 
-                    <strong>Skills Required:</strong> {{ internship.required_skills|join(', ') if internship.required_skills else "None" }}
-                </p>
-                <p><strong>Location:</strong> {{ internship.location or "Remote/Any" }}</p>
-                <p><strong>Matching Skills:</strong> {{ score }}</p>
-                {% if internship.id in applied_ids %}
-                    <span style="color: gray; font-weight: bold;">Already Applied</span>
-                {% else %}
-                    <a class="apply-btn" href="{{ url_for('main.take_quiz', internship_id=internship.id) }}">Take Quiz & Apply</a>
-                {% endif %}
+        <div class="row g-4 mb-5">
+            {% for internship, score in matched %}
+            <div class="col-md-6">
+                <div class="card-custom h-100">
+                    <div class="card-body-custom">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h4 class="mb-0">{{ internship.title }}</h4>
+                            {% if score > 0 %}
+                            <span class="badge-custom badge-success">
+                                <i class="bi bi-star-fill me-1"></i>{{ score }} match{{ 'es' if score != 1 else '' }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <p class="text-secondary mb-3">{{ internship.description[:150] }}...</p>
+
+                        <div class="mb-3">
+                            <small class="text-secondary">
+                                <i class="bi bi-building me-1"></i>
+                                <strong>Department:</strong> {{ internship.department or "Any" }}
+                            </small>
+                            <br>
+                            <small class="text-secondary">
+                                <i class="bi bi-geo-alt-fill me-1"></i>
+                                <strong>Location:</strong> {{ internship.location or "Remote/Any" }}
+                            </small>
+                        </div>
+
+                        {% if internship.required_skills %}
+                        <div class="mb-3">
+                            <small class="text-secondary d-block mb-2">
+                                <i class="bi bi-tools me-1"></i><strong>Required Skills:</strong>
+                            </small>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for skill in internship.required_skills %}
+                                <span class="badge bg-light text-dark" style="border: 1px solid #ddd;">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="mt-3">
+                            {% if internship.id in applied_ids %}
+                                <button class="btn btn-outline-secondary w-100" disabled>
+                                    <i class="bi bi-check-circle-fill me-2"></i>Already Applied
+                                </button>
+                            {% else %}
+                                <a href="{{ url_for('main.take_quiz', internship_id=internship.id) }}" class="btn btn-primary w-100">
+                                    <i class="bi bi-clipboard-check me-2"></i>Take Quiz & Apply
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     {% else %}
-        <p>No internships found yet. Check back later!</p>
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h4>No matching internships yet</h4>
+            <p>Check back later for new opportunities!</p>
+        </div>
     {% endif %}
 
-    <!-- Student Applications -->
-    <h2 class="section-title">Your Applications</h2>
+    <!-- Applications Section -->
+    <div class="section-header fade-in mt-5">
+        <h3><i class="bi bi-briefcase me-2" style="color: var(--accent-color);"></i>Your Applications</h3>
+        <p>Track your submitted applications and quiz results</p>
+    </div>
+
     {% if applications %}
-        {% for app in applications %}
-            <div class="internship">
-                <h3>{{ app.internship.title }}</h3>
-                <p>{{ app.internship.description }}</p>
-                <p class="skills">
-                    <strong>Department:</strong> {{ app.internship.department or "Any" }} |
-                    <strong>Skills Required:</strong> {{ app.internship.required_skills|join(', ') if app.internship.required_skills else "None" }}
-                </p>
-                <p><strong>Location:</strong> {{ app.internship.location or "Remote/Any" }}</p>
-                <p style="color: green; font-weight: bold;">Application Submitted</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>You haven’t applied to any internships yet.</p>
-    {% endif %}
+        <div class="row g-4">
+            {% for app in applications %}
+            <div class="col-md-6">
+                <div class="card-custom">
+                    <div class="card-body-custom">
+                        <h4 class="mb-2">{{ app.internship.title }}</h4>
+                        <p class="text-secondary small mb-3">
+                            <i class="bi bi-calendar-check me-1"></i>
+                            Applied on {{ app.applied_at.strftime('%B %d, %Y') }}
+                        </p>
 
-</body>
-</html>
+                        {% if app.quiz_passed %}
+                        <div class="alert alert-success mb-0">
+                            <i class="bi bi-trophy-fill me-2"></i>
+                            <strong>Quiz Passed!</strong> Score: {{ app.quiz_score }}%
+                        </div>
+                        {% else %}
+                        <div class="alert alert-warning mb-0">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <strong>Quiz Not Passed</strong> - Score: {{ app.quiz_score }}%
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h4>No applications yet</h4>
+            <p>Start applying to internships to see them here!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,52 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quiz - {{ internship.title }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
-        .question { background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 5px; border-left: 4px solid #4CAF50; }
-        .question h4 { margin-top: 0; }
-        .options { display: flex; gap: 20px; margin-top: 10px; }
-        .options label { cursor: pointer; }
-        button { padding: 10px 30px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #45a049; }
-        .info { background: #e3f2fd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <h2>Quiz for: {{ internship.title }}</h2>
-    
-    <div class="info">
-        <p><strong>Instructions:</strong></p>
-        <ul>
-            <li>You must answer 8 questions (4 general + 4 technical)</li>
-            <li>Each question requires a Yes/No answer</li>
-            <li>You need at least 75% (6 correct answers) to pass</li>
-            <li>Read each question carefully before answering</li>
-        </ul>
-    </div>
+{% extends "base.html" %}
 
-    <form method="POST">
-        {% for q in questions %}
-        <div class="question">
-            <h4>Question {{ loop.index }}</h4>
-            <p>{{ q.question }}</p>
-            <div class="options">
-                <label>
-                    <input type="radio" name="q{{ loop.index0 }}" value="yes" required> Yes
-                </label>
-                <label>
-                    <input type="radio" name="q{{ loop.index0 }}" value="no" required> No
-                </label>
+{% block title %}Quiz - {{ internship.title }}{% endblock %}
+
+{% block content %}
+<div class="container-custom py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <!-- Quiz Header -->
+            <div class="card-custom mb-4 fade-in">
+                <div class="card-header-custom">
+                    <h3 class="mb-0">
+                        <i class="bi bi-clipboard-check me-2"></i>
+                        Assessment Quiz
+                    </h3>
+                </div>
+                <div class="card-body-custom">
+                    <h4 class="mb-3">{{ internship.title }}</h4>
+                    
+                    <div class="alert alert-info">
+                        <h5 class="mb-3">
+                            <i class="bi bi-info-circle-fill me-2"></i>Instructions
+                        </h5>
+                        <ul class="mb-0">
+                            <li>You must answer <strong>8 questions</strong> (4 general + 4 technical)</li>
+                            <li>Each question requires a <strong>Yes/No</strong> answer</li>
+                            <li>You need at least <strong>75%</strong> (6 correct answers) to pass</li>
+                            <li>Read each question carefully before answering</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <input type="hidden" name="correct_{{ loop.index0 }}" value="{{ q.answer }}">
-        </div>
-        {% endfor %}
-        
-        <button type="submit">Submit Quiz</button>
-    </form>
 
-    <p><a href="{{ url_for('main.student_dashboard') }}">Back to Dashboard</a></p>
-</body>
-</html>
+            <!-- Quiz Form -->
+            <form method="POST">
+                {% for q in questions %}
+                <div class="card-custom mb-3 fade-in" style="animation-delay: {{ loop.index * 0.05 }}s;">
+                    <div class="card-body-custom">
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="badge bg-primary me-3" style="font-size: 1rem; padding: 0.5rem 0.75rem;">
+                                {{ loop.index }}
+                            </span>
+                            <h5 class="mb-0 flex-grow-1">{{ q.question }}</h5>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <label class="form-check-label flex-grow-1" style="cursor: pointer; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 0.75rem; transition: all 0.3s;">
+                                <input type="radio" class="form-check-input me-2" name="q{{ loop.index0 }}" value="yes" required>
+                                <i class="bi bi-check-circle me-2" style="color: var(--accent-color);"></i>
+                                <strong>Yes</strong>
+                            </label>
+                            <label class="form-check-label flex-grow-1" style="cursor: pointer; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 0.75rem; transition: all 0.3s;">
+                                <input type="radio" class="form-check-input me-2" name="q{{ loop.index0 }}" value="no" required>
+                                <i class="bi bi-x-circle me-2" style="color: #ff3b30;"></i>
+                                <strong>No</strong>
+                            </label>
+                        </div>
+                        <input type="hidden" name="correct_{{ loop.index0 }}" value="{{ q.answer }}">
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Submit Section -->
+                <div class="card-custom fade-in">
+                    <div class="card-body-custom text-center">
+                        <p class="text-secondary mb-4">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Please review your answers before submitting. You cannot retake this quiz.
+                        </p>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-send-fill me-2"></i>Submit Quiz
+                        </button>
+                        <a href="{{ url_for('main.student_dashboard') }}" class="btn btn-outline-secondary btn-lg ms-2">
+                            <i class="bi bi-x-circle me-2"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Radio button hover effect */
+    label.form-check-label:has(input:checked) {
+        border-color: var(--primary-color) !important;
+        background-color: rgba(0, 122, 255, 0.05);
+    }
+    
+    label.form-check-label:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}

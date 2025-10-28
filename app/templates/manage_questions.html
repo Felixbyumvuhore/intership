@@ -1,48 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Manage Technical Questions - {{ internship.title }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; }
-        .question-block { background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
-        input[type="text"], textarea { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
-        textarea { height: 60px; }
-        select { padding: 8px; margin: 5px 0; }
-        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #45a049; }
-        .info { background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <h2>Technical Questions for: {{ internship.title }}</h2>
-    
-    <div class="info">
-        <p><strong>Note:</strong> You must add exactly 8 technical questions. Students will be asked 4 random questions from these 8, along with 4 general professional questions.</p>
-    </div>
+{% extends "base.html" %}
 
-    <form method="POST">
-        {% for i in range(1, 9) %}
-        <div class="question-block">
-            <h4>Technical Question {{ i }}</h4>
-            <label>Question:</label>
-            <textarea name="question_{{ i }}" placeholder="Enter your technical question here..." required>{% if questions and i <= questions|length %}{{ questions[i-1].question }}{% endif %}</textarea>
-            
-            <label>Correct Answer:</label>
-            <select name="answer_{{ i }}" required>
-                <option value="">Select...</option>
-                <option value="yes" {% if questions and i <= questions|length and questions[i-1].correct_answer %}selected{% endif %}>Yes</option>
-                <option value="no" {% if questions and i <= questions|length and not questions[i-1].correct_answer %}selected{% endif %}>No</option>
-            </select>
-            
-            <label>Notes/Feedback (optional):</label>
-            <input type="text" name="notes_{{ i }}" placeholder="Explanation for the correct answer" value="{% if questions and i <= questions|length %}{{ questions[i-1].notes }}{% endif %}">
+{% block title %}Manage Questions - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container-custom py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="card-custom mb-4 fade-in">
+                <div class="card-header-custom">
+                    <h3 class="mb-0">
+                        <i class="bi bi-question-circle me-2"></i>
+                        Technical Questions
+                    </h3>
+                </div>
+                <div class="card-body-custom">
+                    <h4 class="mb-2">{{ internship.title }}</h4>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-lightbulb-fill me-2"></i>
+                        <strong>Important:</strong> You must add exactly <strong>8 technical questions</strong>. 
+                        Students will be randomly asked 4 of these questions along with 4 general professional questions.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions Form -->
+            <form method="POST">
+                {% for i in range(1, 9) %}
+                <div class="card-custom mb-3 fade-in" style="animation-delay: {{ i * 0.05 }}s;">
+                    <div class="card-body-custom">
+                        <h5 class="mb-3">
+                            <span class="badge bg-primary me-2">Question {{ i }}</span>
+                        </h5>
+
+                        <div class="mb-3">
+                            <label for="question_{{ i }}" class="form-label">
+                                <i class="bi bi-chat-left-text me-2"></i>Question Text
+                            </label>
+                            <textarea class="form-control" id="question_{{ i }}" name="question_{{ i }}" 
+                                      rows="3" placeholder="Enter your technical question here..." required>{% if questions and i <= questions|length %}{{ questions[i-1].question }}{% endif %}</textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="answer_{{ i }}" class="form-label">
+                                    <i class="bi bi-check2-circle me-2"></i>Correct Answer
+                                </label>
+                                <select class="form-select" id="answer_{{ i }}" name="answer_{{ i }}" required>
+                                    <option value="">Select correct answer...</option>
+                                    <option value="yes" {% if questions and i <= questions|length and questions[i-1].correct_answer %}selected{% endif %}>
+                                        ✅ Yes
+                                    </option>
+                                    <option value="no" {% if questions and i <= questions|length and not questions[i-1].correct_answer %}selected{% endif %}>
+                                        ❌ No
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="notes_{{ i }}" class="form-label">
+                                    <i class="bi bi-journal-text me-2"></i>Notes/Feedback (Optional)
+                                </label>
+                                <input type="text" class="form-control" id="notes_{{ i }}" name="notes_{{ i }}" 
+                                       placeholder="Explanation for the correct answer"
+                                       value="{% if questions and i <= questions|length %}{{ questions[i-1].notes }}{% endif %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Submit Section -->
+                <div class="card-custom fade-in">
+                    <div class="card-body-custom text-center">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle-fill me-2"></i>Save All Questions
+                        </button>
+                        <a href="{{ url_for('main.employer_dashboard') }}" class="btn btn-outline-secondary btn-lg ms-2">
+                            <i class="bi bi-x-circle me-2"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
         </div>
-        {% endfor %}
-        
-        <button type="submit">Save Technical Questions</button>
-    </form>
-
-    <p><a href="{{ url_for('main.employer_dashboard') }}">Back to Dashboard</a></p>
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}

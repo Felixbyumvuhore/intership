@@ -1,29 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Profile</title>
-</head>
-<body>
-    <h2>Edit Profile</h2>
-    <form method="POST" action="{{ url_for('main.edit_student') }}">
-        <label>Full Name</label>
-        <input type="text" name="full_name" value="{{ student.full_name }}" required>
+{% extends "base.html" %}
 
-        <label>Department</label>
-        <input type="text" name="department" value="{{ student.department }}" required>
+{% block title %}Edit Profile - CareerHub{% endblock %}
 
-        <label>Skills (comma separated)</label>
-        <input type="text" name="skills" value="{{ student.skills|join(', ') }}">
+{% block content %}
+<div class="container-custom py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card-custom fade-in">
+                <div class="card-header-custom">
+                    <h3 class="mb-0">
+                        <i class="bi bi-person-circle me-2"></i>Edit Your Profile
+                    </h3>
+                </div>
+                <div class="card-body-custom p-4">
+                    <form method="POST" action="{{ url_for('main.edit_student') }}">
+                        <div class="mb-4">
+                            <label for="full_name" class="form-label">
+                                <i class="bi bi-person-fill me-2"></i>Full Name
+                            </label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" 
+                                   value="{{ student.full_name }}" required>
+                        </div>
 
-        <button type="submit">Update</button>
-    </form>
+                        <div class="mb-4">
+                            <label for="department" class="form-label">
+                                <i class="bi bi-building me-2"></i>Department
+                            </label>
+                            <input type="text" class="form-control" id="department" name="department" 
+                                   value="{{ student.department }}" placeholder="e.g., Computer Science" required>
+                        </div>
 
-    <form method="POST" action="{{ url_for('main.delete_student') }}" style="margin-top:20px;">
-        <button type="submit" onclick="return confirm('Are you sure?')">Delete Profile</button>
-    </form>
+                        <div class="mb-4">
+                            <label for="skills" class="form-label">
+                                <i class="bi bi-star-fill me-2"></i>Skills
+                            </label>
+                            <input type="text" class="form-control" id="skills" name="skills" 
+                                   value="{{ student.skills|join(', ') }}" 
+                                   placeholder="e.g., Python, Data Analysis, UI Design">
+                            <small class="text-secondary">Separate multiple skills with commas</small>
+                        </div>
 
-    <p><a href="{{ url_for('main.student_dashboard') }}">Back to Dashboard</a></p>
-</body>
-</html>
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-2"></i>Update Profile
+                            </button>
+                            <a href="{{ url_for('main.student_dashboard') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
 
+                    <hr class="my-4">
+
+                    <!-- Delete Account Section -->
+                    <div class="alert alert-danger">
+                        <h5 class="mb-3">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>Danger Zone
+                        </h5>
+                        <p class="mb-3">Deleting your account is permanent and cannot be undone.</p>
+                        <form method="POST" action="{{ url_for('main.delete_student') }}" 
+                              onsubmit="return confirm('Are you absolutely sure? This action cannot be undone.');">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-2"></i>Delete Account
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
