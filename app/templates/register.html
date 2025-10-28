@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Marketplace</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        input, select, textarea { width: 100%; padding: 8px; margin: 5px 0 15px; box-sizing: border-box; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .optional { font-size: 0.9em; color: #555; }
+    </style>
+    <script>
+        function toggleFields() {
+            var role = document.getElementById("role").value;
+            if (role === "student") {
+                document.getElementById("studentFields").style.display = "block";
+                document.getElementById("employerFields").style.display = "none";
+            } else if (role === "employer") {
+                document.getElementById("studentFields").style.display = "none";
+                document.getElementById("employerFields").style.display = "block";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Register</h2>
+    <form method="POST" action="{{ url_for('main.register') }}">
+        <label for="full_name">Full Name</label>
+        <input type="text" name="full_name" id="full_name" required>
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+
+        <label for="role">I am a:</label>
+        <select name="role" id="role" onchange="toggleFields()" required>
+            <option value="">Select</option>
+            <option value="student">Student</option>
+            <option value="employer">Employer</option>
+        </select>
+
+        <!-- Student fields -->
+        <div id="studentFields" style="display:none;">
+            <label for="department">Department</label>
+            <input type="text" name="department" id="department" placeholder="e.g., Computer Science">
+
+            <label for="skills">Skills <span class="optional">(comma separated)</span></label>
+            <input type="text" name="skills" id="skills" placeholder="e.g., Python, Excel, Graphic Design">
+        </div>
+
+        <!-- Employer fields -->
+        <div id="employerFields" style="display:none;">
+            <label for="company_name">Company Name</label>
+            <input type="text" name="company_name" id="company_name" placeholder="Your company name">
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account? <a href="{{ url_for('main.login') }}">Login here</a></p>
+</body>
+</html>
+

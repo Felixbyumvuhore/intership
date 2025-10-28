@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Career & Skills Marketplace</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        a { display: inline-block; margin: 10px; padding: 10px 20px; text-decoration: none; background: #4CAF50; color: white; border-radius: 5px; }
+        a:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Student Career & Skills Marketplace</h1>
+    <p>Connect students with internships efficiently.</p>
+
+    <div>
+        <a href="{{ url_for('main.register') }}">Register</a>
+        <a href="{{ url_for('main.login') }}">Login</a>
+    </div>
+</body>
+</html>
+
