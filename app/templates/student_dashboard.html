@@ -7,16 +7,22 @@
         body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; }
         h2 { text-align: center; margin-top: 40px; }
         .internship { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
-        .internship h3 { margin: 0; }
-        .skills { font-size: 0.9em; color: #555; }
+        .internship h3 { margin: 0 0 10px 0; }
+        .skills { font-size: 0.9em; color: #555; margin-bottom: 5px; }
         .apply-btn { padding: 8px 15px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; }
         .apply-btn:hover { background: #45a049; }
-        .top-bar { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .top-bar a { text-decoration: none; color: #4CAF50; font-weight: bold; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .top-bar a { text-decoration: none; color: #4CAF50; font-weight: bold; margin-left: 10px; }
         .section-title { margin-top: 40px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        .flash { padding: 10px; border-radius: 4px; margin-bottom: 15px; }
+        .flash-success { background-color: #d4edda; color: #155724; }
+        .flash-info { background-color: #cce5ff; color: #004085; }
+        .flash-warning { background-color: #fff3cd; color: #856404; }
+        .flash-danger { background-color: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
+
     <div class="top-bar">
         <span>Welcome, {{ student.full_name }} ({{ student.department }})</span>
         <div>
@@ -25,6 +31,18 @@
         </div>
     </div>
 
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Matched Internships -->
     <h2 class="section-title">Matched Internships</h2>
     {% if matched %}
         {% for internship, score in matched %}
@@ -48,6 +66,7 @@
         <p>No internships found yet. Check back later!</p>
     {% endif %}
 
+    <!-- Student Applications -->
     <h2 class="section-title">Your Applications</h2>
     {% if applications %}
         {% for app in applications %}
@@ -65,5 +84,6 @@
     {% else %}
         <p>You haven’t applied to any internships yet.</p>
     {% endif %}
+
 </body>
 </html>

@@ -28,4 +28,6 @@ class Application(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
     internship_id = db.Column(db.Integer, db.ForeignKey('internship.id'))
     applied_at = db.Column(db.DateTime, default=datetime.utcnow)
+    student = db.relationship('Profile', foreign_keys=[student_id], backref='applications')
+    internship = db.relationship('Internship', backref='applications')
 
