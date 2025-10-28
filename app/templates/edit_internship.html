@@ -1,0 +1,19 @@
+<h2>{{ internship.title if internship else "Post New Internship" }}</h2>
+<form method="POST">
+    <label>Title</label>
+    <input type="text" name="title" value="{{ internship.title if internship else '' }}" required>
+
+    <label>Description</label>
+    <textarea name="description" required>{{ internship.description if internship else '' }}</textarea>
+
+    <label>Department</label>
+    <input type="text" name="department" value="{{ internship.department if internship else '' }}">
+
+    <label>Location</label>
+    <input type="text" name="location" value="{{ internship.location if internship else '' }}">
+
+    <label>Skills Required (comma separated)</label>
+    <input type="text" name="skills" value="{{ internship.required_skills|join(', ') if internship else '' }}">
+
+    <button type="submit">Submit</button>
+</form>

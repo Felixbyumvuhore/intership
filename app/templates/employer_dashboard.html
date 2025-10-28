@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employer Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; }
+        h2 { text-align: center; margin-top: 20px; }
+        .internship { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .skills { font-size: 0.9em; color: #555; }
+        .btn { padding: 6px 12px; margin-right: 5px; border-radius: 4px; border: none; cursor: pointer; text-decoration: none; }
+        .edit { background: #2196F3; color: white; }
+        .delete { background: #f44336; color: white; }
+        .applicants { background: #4CAF50; color: white; }
+        .top-bar { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .top-bar a { text-decoration: none; color: #4CAF50; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span>Welcome, {{ employer.full_name }}</span>
+        <div>
+            <a href="{{ url_for('main.post_internship') }}">Post New Internship</a> |
+            <a href="{{ url_for('main.logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <h2>Your Internships</h2>
+    {% if internships %}
+        {% for internship in internships %}
+            <div class="internship">
+                <h3>{{ internship.title }}</h3>
+                <p>{{ internship.description }}</p>
+                <p class="skills">
+                    <strong>Department:</strong> {{ internship.department or "Any" }} | 
+                    <strong>Skills Required:</strong> {{ internship.required_skills|join(', ') if internship.required_skills else "None" }}
+                </p>
+                <p><strong>Location:</strong> {{ internship.location or "Remote/Any" }}</p>
+                <a class="btn edit" href="{{ url_for('main.edit_internship', id=internship.id) }}">Edit</a>
+                <form method="POST" action="{{ url_for('main.delete_internship', id=internship.id) }}" style="display:inline;">
+                    <button class="btn delete" onclick="return confirm('Are you sure?')">Delete</button>
+                </form>
+                <a class="btn applicants" href="{{ url_for('main.view_applicants', id=internship.id) }}">View Applicants</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have not posted any internships yet.</p>
+    {% endif %}
+</body>
+</html>
+

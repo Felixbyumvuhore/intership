@@ -20,6 +20,7 @@ class Internship(db.Model):
     department = db.Column(db.String(100))
     required_skills = db.Column(db.PickleType)
     location = db.Column(db.String(100))
+    company_id = db.Column(db.Integer, db.ForeignKey('profile.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Application(db.Model):
