@@ -8,6 +8,7 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String(20), nullable=False)
     full_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)  # Added email field
     department = db.Column(db.String(100))
     skills = db.Column(db.PickleType)
     company_name = db.Column(db.String(100))
@@ -31,7 +32,7 @@ class TechnicalQuestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     internship_id = db.Column(db.Integer, db.ForeignKey('internship.id'), nullable=False)
     question = db.Column(db.Text, nullable=False)
-    correct_answer = db.Column(db.Boolean, nullable=False)  # True for Yes, False for No
+    correct_answer = db.Column(db.Boolean, nullable=False)
     notes = db.Column(db.Text)
 
 class Application(db.Model):
@@ -46,7 +47,7 @@ class Application(db.Model):
     student = db.relationship('Profile', foreign_keys=[student_id], backref='applications')
     internship = db.relationship('Internship', backref='applications')
 
-# General questions pool (stored in database for flexibility)
+# General questions pool
 GENERAL_QUESTIONS = [
     {
         "question": "Should your résumé include your most recent education and any relevant skills or experiences?",

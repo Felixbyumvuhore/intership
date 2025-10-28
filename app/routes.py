@@ -40,21 +40,22 @@ def register():
         role = request.form.get('role')
 
         # Validate input
-        if not full_name or not password or not role:
+        if not full_name or not email or not password or not role:
             flash("Please fill in all required fields.", "warning")
             return redirect(url_for('main.register'))
 
-        # Check if user already exists
-        existing_user = Profile.query.filter_by(full_name=full_name).first()
+        # Check if user already exists (by name or email)
+        existing_user = Profile.query.filter(
+            (Profile.full_name == full_name) | (Profile.email == email)
+        ).first()
+        
         if existing_user:
-            flash("A user with this name already exists. Please use a different name or login.", "warning")
+            flash("A user with this name or email already exists. Please use different credentials or login.", "warning")
             return redirect(url_for('main.register'))
 
         # For students
         department = request.form.get('department') if role == 'student' else None
         skills_input = request.form.get('skills') if role == 'student' else None
-
-        # Convert comma-separated string into a list, removing extra spaces
         skills_list = [s.strip() for s in skills_input.split(',')] if skills_input else []
 
         # For employers
@@ -63,10 +64,11 @@ def register():
         # Hash password safely
         hashed_password = generate_password_hash(password, method='scrypt')
 
-        # Create profile
+        # Create profile with email
         new_profile = Profile(
             role=role,
             full_name=full_name,
+            email=email,  # Added email
             department=department,
             skills=skills_list,
             company_name=company_name,
